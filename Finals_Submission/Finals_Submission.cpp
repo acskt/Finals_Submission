@@ -11,6 +11,7 @@ AMACC - Las Pinas
 #include <queue>
 #include <unordered_map>
 #include <cstdlib>
+#include <vector>
 using namespace std;
 
 class Stack
@@ -102,6 +103,122 @@ public:
 	}
 };
 
+class Node {
+public:
+	int data;
+	Node* next;
+
+	Node(int value) : data(value), next(nullptr) {}
+};
+
+class LinkedList {
+private:
+	Node* head;
+
+public:
+	LinkedList() : head(nullptr) {}
+
+	void insert(int value) {
+		Node* newNode = new Node(value);
+		if (head == nullptr) {
+			head = newNode;
+		}
+		else {
+			Node* current = head;
+			while (current->next != nullptr) {
+				current = current->next;
+			}
+			current->next = newNode;
+		}
+	}
+
+	void display() {
+		Node* current = head;
+		while (current != nullptr) {
+			std::cout << current->data << " ";
+			current = current->next;
+		}
+		std::cout << std::endl;
+	}
+};
+
+class TreeNode {
+public:
+	int data;
+	TreeNode* left;
+	TreeNode* right;
+
+	TreeNode(int value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+private:
+	TreeNode* root;
+
+public:
+	BinaryTree() : root(nullptr) {}
+
+	void insert(int value) {
+		root = insertRecursive(root, value);
+	}
+
+	TreeNode* insertRecursive(TreeNode* current, int value) {
+		if (current == nullptr) {
+			return new TreeNode(value);
+		}
+
+		if (value < current->data) {
+			current->left = insertRecursive(current->left, value);
+		}
+		else if (value > current->data) {
+			current->right = insertRecursive(current->right, value);
+		}
+
+		return current;
+	}
+
+	void displayInOrder(TreeNode* node) {
+		if (node == nullptr) {
+			return;
+		}
+
+		displayInOrder(node->left);
+		std::cout << node->data << " ";
+		displayInOrder(node->right);
+	}
+
+	void display() {
+		displayInOrder(root);
+		std::cout << std::endl;
+	}
+};
+
+class Graph {
+private:
+	int numVertices;
+	std::vector<std::vector<int>> adjList;
+
+public:
+	Graph(int vertices) : numVertices(vertices) {
+		adjList.resize(numVertices);
+	}
+
+	void addEdge(int u, int v) {
+		adjList[u].push_back(v);
+		adjList[v].push_back(u);
+	}
+
+	void printGraph() {
+		for (int i = 0; i < numVertices; ++i) {
+			std::cout << "Vertex " << i << " -> ";
+			for (int v : adjList[i]) {
+				std::cout << v << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+};
+
 int main()
 {
 	int moption;
@@ -112,6 +229,9 @@ int main()
 		cout << "2. Queue" << endl;
 		cout << "3. Heap Maps" << endl;
 		cout << "4. List" << endl;
+		cout << "5. Priority Queue" << endl;
+		cout << "6. Tree" << endl;
+		cout << "7. Graph" << endl;
 		cout << "9. Clear Screen" << endl;
 		cout << "0. Exit Program" << endl << endl;
 		cin >> moption;
@@ -264,6 +384,68 @@ int main()
 				cout << "Enter a valid option" << endl << endl;
 			}
 		} while (option != 0); }
+		case 4:
+		{
+			LinkedList list;
+			list.insert(24);
+			list.insert(45);
+			list.insert(60);
+			list.display();
+			break;
+		}
+		case 5:
+		{std::priority_queue<int> maxHeap;
+		maxHeap.push(30);
+		maxHeap.push(10);
+		maxHeap.push(50);
+		maxHeap.push(20);
+		std::cout << "Top element: " << maxHeap.top() << std::endl;
+		while (!maxHeap.empty()) {
+			std::cout << maxHeap.top() << " ";
+			maxHeap.pop();
+		}
+		std::cout << std::endl;
+		std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+		minHeap.push(30);
+		minHeap.push(10);
+		minHeap.push(50);
+		minHeap.push(20);
+		std::cout << "Top element: " << minHeap.top() << std::endl;
+
+		while (!minHeap.empty()) {
+			std::cout << minHeap.top() << " ";
+			minHeap.pop();
+		}
+
+		std::cout << std::endl;
+		break; }
+		case 6:
+		{BinaryTree tree;
+		tree.insert(25);
+		tree.insert(77);
+		tree.insert(2);
+		tree.insert(15);
+		tree.insert(31);
+
+		std::cout << "In-order traversal: ";
+		tree.display();
+
+		break; }
+		case 7:
+		{	int numVertices = 5;
+		Graph graph(numVertices);
+
+		graph.addEdge(0, 1);
+		graph.addEdge(0, 4);
+		graph.addEdge(1, 2);
+		graph.addEdge(1, 3);
+		graph.addEdge(1, 4);
+		graph.addEdge(2, 3);
+		graph.addEdge(3, 4);
+
+		graph.printGraph();
+
+		break; }
 		case 9:
 			system("cls");
 			break;
